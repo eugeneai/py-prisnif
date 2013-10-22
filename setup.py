@@ -32,7 +32,7 @@ setup(
 	],
 
     license = "GNU GPL",
-    keywords = "automatic theorem proving",
+    keywords = "automatic theorem proving ATP proof first-order logics",
 
     long_description = """ """,
 
