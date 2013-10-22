@@ -1,21 +1,3 @@
-[submodule "submodules/rake"]
-	path = submodules/rake
-	url = git@github.com:eugeneai/dispersive.git
-[submodule "submodules/jsonpickle"]
-	path = submodules/jsonpickle
-	url = git@github.com:eugeneai/jsonpickle.git
-[submodule "submodules/xdot"]
-	path = submodules/xdot
-	url = git@github.com:eugeneai/xdot.py.git
-[submodule "submodules/matplotlib"]
-	path = submodules/matplotlib
-	url = git@github.com:eugeneai/matplotlib.git
 [submodule "submodules/prisnif"]
 	path = submodules/prisnif
 	url = git@bitbucket.org:eugeneai/prisnif.git
-[submodule "submodules/DME"]
-	path = submodules/DME
-	url = git@github.com:eugeneai/DME.git
-[submodule "submodules/dispersive"]
-	path = submodules/dispersive
-	url = git@github.com:eugeneai/dispersive.git
