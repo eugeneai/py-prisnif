@@ -11,7 +11,7 @@ log.set_verbosity(100)
 setup(
     zip_safe = True,
 	name="icc.atp",
-	version="0.0.5",
+	version="0.0.1",
 	author="Evgeny Cherkashin",
 	author_email="eugeneai@irnok.net",
 	description="Automatic Theorem Proving wrapper for Python",
@@ -26,7 +26,7 @@ setup(
     ],
 
 	ext_modules=[
-        Extension("icc.prisnif.atp",
+        Extension("icc.atp.atp",
                   sources=["src/icc/atp/src/atp.d"],
         )
 	],
