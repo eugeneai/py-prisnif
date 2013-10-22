@@ -1,3 +1,6 @@
 [submodule "submodules/prisnif"]
 	path = submodules/prisnif
 	url = git@bitbucket.org:eugeneai/prisnif.git
+[submodule "submodules/pyd"]
+	path = submodules/pyd
+	url = git@github.com:eugeneai/pyd.git
