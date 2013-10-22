@@ -10,11 +10,11 @@ log.set_verbosity(100)
 
 setup(
     zip_safe = True,
-	name="icc.dme",
+	name="icc.atp",
 	version="0.0.5",
 	author="Evgeny Cherkashin",
 	author_email="eugeneai@irnok.net",
-	description="Forest Dynamics Modelling Environment",
+	description="Automatic Theorem Proving wrapper for Python",
 
     packages=find_packages("src"),
     package_dir={"": "src"},
@@ -22,12 +22,7 @@ setup(
 
     install_requires=[
         "setuptools",
-        "icc.dme.fd",
-        "icc.xray",
-        "jsonpickle",
-        "xlrd",
-        "pygraphviz",
-        "xdot"
+        "celerid",
     ],
 
 	ext_modules=[
@@ -36,12 +31,8 @@ setup(
         )
 	],
 
-    scripts = ['src/icc/icc_dme_app.py'],
-    package_data = {
-        'icc.dme.views': ['ui/*.glade',] #  "ui/icons/tango/16x16/*/*.png"],
-        },
     license = "GNU GPL",
-    keywords = "fores resources pygtk analysis tool application",
+    keywords = "automatic theorem proving",
 
     long_description = """ """,
 
