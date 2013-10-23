@@ -5,8 +5,22 @@ from distutils import log
 
 from celerid.support import setup, Extension
 import celerid, setuptools
+import os.path
 
 log.set_verbosity(100)
+
+
+prisnif_sources="""answer.d gterm.d misc.d
+  parserhu.d pchunk.d prisnif.d
+  proofnode.d qformulas.d
+  question.d supervisor.d symbol.d
+  """.split()
+prisnif_src_location="submodules/prisnif/"
+prisnif_sources=[os.path.join(prisnif_src_location, f) for f in prisnif_sources]
+
+
+print "Prisnif:", prisnif_sources
+
 
 setup(
     zip_safe = True,
@@ -27,7 +41,9 @@ setup(
 
 	ext_modules=[
         Extension("icc.atp.atp",
-                  sources=["src/icc/atp/src/atp.d"],
+                  sources=["src/icc/atp/src/atp.d",
+                    ] + prisnif_sources,
+                  include_dirs=[prisnif_src_location],
         )
 	],
 
