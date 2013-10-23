@@ -1,3 +1,4 @@
 import icc.atp
 
-atp.hello_func()
+icc.atp.hello_func()
+quit()

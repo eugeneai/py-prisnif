@@ -1,9 +1,6 @@
 #!/bin/env python2
-import prisnif
-
-def test():
-    prisnif.main()
+import icc.atp.atp as a
 
 if __name__=="__main__":
-    test()
+    a.hello_func()
     quit()
