@@ -1,3 +1,3 @@
-import atp
+import icc.atp
 
-prisnif.hello_func()
+atp.hello_func()
