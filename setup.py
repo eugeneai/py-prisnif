@@ -15,7 +15,8 @@ prisnif_sources="""answer.d gterm.d misc.d
   proofnode.d qformulas.d
   question.d supervisor.d symbol.d
   """.split()
-prisnif_src_location="submodules/prisnif/"
+prisnif_src_location="src/icc/atp/src/"
+#prisnif_src_location="submodules/prisnif/"
 prisnif_sources=[os.path.join(prisnif_src_location, f) for f in prisnif_sources]
 
 
@@ -43,7 +44,7 @@ setup(
         Extension("icc.atp.atp",
                   sources=["src/icc/atp/src/atp.d",
                     ] + prisnif_sources,
-                  include_dirs=[prisnif_src_location],
+#                  include_dirs=[prisnif_src_location],
         )
 	],
 

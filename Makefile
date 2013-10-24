@@ -1,5 +1,5 @@
 .PHONY: setup clean
-DFLAGS=-I submodules/prisnif
+DFLAGS="-Isrc/icc/atp/src"
 setup: setup.py
 	python setup.py develop
 
