@@ -9,7 +9,8 @@ import os.path, glob
 
 log.set_verbosity(100)
 
-prisnif_sources=glob.glob('src/icc/atp/src/*.d')
+prisnif_sources=glob.glob('src/icc/atp/src/*.d')+glob.glob('submodules/prisnif/*.d')
+prisnif_sources=[s for s in prisnif_sources if not s.endswith('main.d')]
 
 setup(
     zip_safe = True,
@@ -31,7 +32,6 @@ setup(
 	ext_modules=[
         Extension("icc.atp.atp",
             sources=prisnif_sources,
-            include_dirs=["src/icc/atp/src"],
         )
 	],
 
