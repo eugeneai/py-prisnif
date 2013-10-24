@@ -6,34 +6,35 @@ import std.conv;
 
 import prisnif;
 
-void run(string args[]){
+void run(string let, string arg, string par){
 	Prover p = new Prover();
-	if (args[1]=="u"){
+	if (let=="u"){
 		p.uncoTest();
-	}else if(args[1]=="c"){
+	}else if(let=="c"){
 		p.copyx();
-	}else if(args[1]=="s"){
+	}else if(let=="s"){
 		p.select();
-	}else if(args[1]=="a"){
-		p.parseappendix(args[2]);
-	}else if(args[1]=="v"){
+	}else if(let=="a"){
+		p.parseappendix(arg);
+	}else if(let=="v"){
 		p.statvar();
-	}else if(args[1]=="b"){
+	}else if(let=="b"){
 		p.statvar2();
-	}else if(args[1] == "sv"){
+	}else if(let == "sv"){
 		p.statSize();
 	}else{
-		p.start(args[1],to!int(args[2]),args[3]);
+          p.start(let, to!int(arg), par);
 	}
 
 }
 
-void hello_func() {
-  writefln("Hello, world!");
+void hello_func(string s) {
+  writef("Hello, world! ");
+  writefln(s);
 }
 
 extern (C) void PydMain() {
   def!(hello_func)();
-  //def!(run)();
+  def!(run)();
   module_init();
 }
