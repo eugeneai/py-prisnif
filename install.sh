@@ -10,7 +10,7 @@ CAIRO_V="1.10.0"
 
 
 # DEBUG="1"
-DEBUG="" 
+DEBUG=""
 
 git submodule init
 git submodule update
@@ -18,7 +18,12 @@ git submodule update
 cd submodules
 cd pyd
 python setup.py install
+#cd ../prisnif
+#make lib
 cd ../..
+
+cp submodules/prisnif/*.d src/icc/atp/src/
+rm -f src/icc/atp/src/main.d
 
 $PYTHON setup.py develop
 
