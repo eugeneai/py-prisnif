@@ -22,9 +22,6 @@ python setup.py install
 #make lib
 cd ../..
 
-cp submodules/prisnif/*.d src/icc/atp/src/
-rm -f src/icc/atp/src/main.d
-
 $PYTHON setup.py develop
 
 rm -rf tmp-install
