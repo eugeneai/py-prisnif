@@ -2,5 +2,7 @@
 import icc.atp.atp as a
 
 if __name__=="__main__":
-    a.hello_func()
+    import sys
+    rc=a.run(sys.argv[1], sys.argv[2], sys.argv[3])
+    print "Result is:", rc
     quit()
