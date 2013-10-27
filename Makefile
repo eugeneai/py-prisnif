@@ -1,6 +1,7 @@
 .PHONY: setup clean
 DFLAGS="-Isrc/icc/atp/src"
-setup: setup.py
+
+setup: setup.py clean
 	python setup.py develop
 
 clean:
