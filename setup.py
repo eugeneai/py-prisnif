@@ -9,8 +9,18 @@ import os.path, glob
 
 log.set_verbosity(100)
 
-prisnif_sources=glob.glob('src/icc/atp/src/*.d')+glob.glob('submodules/prisnif/*.d')
-prisnif_sources=[s for s in prisnif_sources if not s.endswith('main.d')]
+prisnif_sources1 =glob.glob('src/icc/atp/src/*.d')
+prisnif_sources2 = glob.glob('submodules/prisnif/*.d')
+prisnif_sources2 = [s for s in prisnif_sources2
+                 if not
+                 (
+                     s.endswith('main.d') or
+                     s.endswith('gterm.d') or
+                     s.endswith('symbol.d')
+                 )
+]
+
+prisnif_sources=prisnif_sources1 + prisnif_sources2
 
 setup(
     zip_safe = True,
