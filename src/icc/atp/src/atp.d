@@ -51,7 +51,7 @@ bool symb(string type, string name, ulong arity, PydObject o = null) {
     case "const":
       t=SymbolType.CONSTANT;
       break;
-    case "fun":
+    case "func":
       t=SymbolType.FUNCTION;
       break;
     case "atom":
