@@ -36,7 +36,7 @@ void hello_func(string s) {
   writefln(s);
 }
 
-int term(string type, string name, ulong arity, PydObject o = null) {
+int symbol(string type, string name, ulong arity, PydObject o = null) {
   SymbolType t;
   switch (type) {
     case "const":
@@ -69,6 +69,6 @@ int term(string type, string name, ulong arity, PydObject o = null) {
 extern (C) void PydMain() {
   def!(hello_func)();
   def!(run)();
-  def!(term)();
+  def!(symbol)();
   module_init();
 }
