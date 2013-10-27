@@ -7,6 +7,8 @@ import std.conv;
 import prisnif;
 import symbol;
 
+SymbolTable st = null;
+
 int run(string let, string arg, string par){
   int rc=0;
   Prover p = new Prover();
@@ -26,7 +28,7 @@ int run(string let, string arg, string par){
   }else if(let == "sv"){
     p.statSize();
   }else{
-    rc=p.start(let, to!int(arg), par);
+    rc=p.start(let, to!int(arg), par, st);
   }
   return rc;
 }
@@ -36,8 +38,15 @@ void hello_func(string s) {
   writefln(s);
 }
 
-int symbol(string type, string name, ulong arity, PydObject o = null) {
+bool symb(string type, string name, ulong arity, PydObject o = null) {
   SymbolType t;
+  Symbol s;
+  bool rc;
+
+  if (st is null) {
+    st = new SymbolTable();
+  }
+
   switch (type) {
     case "const":
       t=SymbolType.CONSTANT;
@@ -59,16 +68,23 @@ int symbol(string type, string name, ulong arity, PydObject o = null) {
       t=SymbolType.STRING;
       break;
   default:
-    writefln("Unknown type of term '%s'", type);
-    return 0;
+    writefln("Warning:Unknown type of term '%s'", type);
+    return false;
   };
-  writefln("Added term '%s' to the symbol table.", name);
-  return 1;
+
+  s=new Symbol(t, name, arity, o);
+  rc = st.add_symbol(s);
+  if (rc) {
+    writefln("Added term '%s' to the symbol table.", name);
+  } else {
+    writefln("Warning: Term '%s' is already added.", name);
+  }
+  return rc;
 };
 
 extern (C) void PydMain() {
   def!(hello_func)();
   def!(run)();
-  def!(symbol)();
+  def!(symb)();
   module_init();
 }
