@@ -79,13 +79,33 @@ class GTerm{
 		return false;
 	}
 
+  static PydObject interp(GTerm t) {
+    PydObject pyd_args;
+    PyObject * py_args;
+    PyObject * tmp;
+    py_args = PyTuple_New(t.args.length);
+    foreach(i,a;t.args){
+      if (a.symbol.pyo is null) {
+        tmp = d_to_python(a.to_string());
+      } else {
+        tmp = d_to_python(a.symbol.pyo);
+      };
+      if (tmp is null) {
+        writefln("Error: cannot convert!");
+        return null;
+      };
+      PyTuple_SetItem(py_args, i, tmp);
+    }
+    pyd_args=new PydObject(py_args);
+    return t.symbol.pyo.unpack_call(pyd_args);
+  }
 
-	GTerm reduce(){
+
+	GTerm reduce() {
+          PydObject rc;
+          string rcs;
           // writeln("reduce: [start]");
 		GTerm t = get_value();
-                PydObject pyd_args;
-                PyObject * py_args;
-                PyObject * tmp;
 		if(t.is_top_constant())return this;
 		if(t.is_top_atom()){
 			foreach(i,a;t.args){
@@ -94,23 +114,25 @@ class GTerm{
                         if (t.symbol.pyo is null) return t;
                         if (! t.symbol.pyo.callable()) return t;
                         // py_args=PydObject(PyTuple_FromItems(t.args));
-                        py_args = PyTuple_New(t.args.length);
-			foreach(i,a;t.args){
-                          tmp = d_to_python(a.symbol.name);
-                          if (tmp is null) {
-                            writefln("Error cannot convert!");
-                            return t;
-                          };
-                          PyTuple_SetItem(py_args, i, tmp);
-			}
-                        pyd_args=new PydObject(py_args);
-                        t.symbol.pyo.unpack_call(pyd_args);
-                        return t; // Just a prdicate call, may be true or false must be returned.
+                        rc = interp(t);
+                        if (rc is null) return t;
+                        if (rc == None) return t;
+                        rcs=rc.toString();
+                        switch (rcs) {
+                        case "False":
+                          return cr_false();
+                        case "True":
+                          return null;
+                        };
+
+                        return t; // Just a predicate call, may be true or false must be returned
                         // FIXME. I.e. None - Call and do nothig, True - return true, False - return false.
 
 		}
 		if(t.is_top_function()){
 			//writeln("reduce: function");
+                  if (t.symbol.pyo is null) {
+                    /*
 			if(t.symbol.name=="+"){
 				ulong r = to!int(t.args[0].reduce().symbol.name) + to!int(t.args[1].reduce().symbol.name);
 				return new GTerm(new Symbol(SymbolType.CONSTANT,to!string(r),0));
@@ -123,10 +145,21 @@ class GTerm{
 				ulong r = to!int(t.args[0].reduce().symbol.name) * to!int(t.args[1].reduce().symbol.name);
 				return new GTerm(new Symbol(SymbolType.CONSTANT,to!string(r),0));
 			}
+                    */
 			foreach(i,a;t.args){
 				t.args[i] = a.reduce();
 			}
 			return t;
+                  } else { // t.symbol.pyo != null
+			foreach(i,a;t.args){
+				t.args[i] = a.reduce();
+			}
+
+                        rc = interp(t);
+                        if (rc is null) return t;
+                        rcs=rc.toString();
+                        return new GTerm(new Symbol(SymbolType.CONSTANT, "py_" ~ rcs, 0, rc));
+                  }
 		}
 		return this;
 	}
