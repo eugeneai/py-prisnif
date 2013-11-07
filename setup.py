@@ -14,9 +14,7 @@ prisnif_sources2 = glob.glob('submodules/prisnif/*.d')
 prisnif_sources2 = [s for s in prisnif_sources2
                  if not
                  (
-                     s.endswith('main.d') or
-                     s.endswith('gterm.d') or
-                     s.endswith('symbol.d')
+                     s.endswith('main.d')
                  )
 ]
 

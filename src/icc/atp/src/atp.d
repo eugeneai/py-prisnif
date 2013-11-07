@@ -7,6 +7,31 @@ import std.conv;
 import prisnif;
 import symbol;
 
+class Symbol:symbol.Symbol{
+  PydObject pyo = null; // Object that is called (if not NULL or None)
+
+  this(){
+  }
+
+  this(Symbol s){
+    super(s);
+    set_pyd_object(s.pyo);
+  }
+
+  this(SymbolType _type, string _name, ulong _arity, PydObject _pyo = null){
+    super(_type, _name, _arity);
+    set_pyd_object(_pyo);
+  }
+
+  PydObject set_pyd_object(PydObject obj) {
+    PydObject o = pyo;
+    pyo = obj;
+    return pyo;
+  };
+
+
+}
+
 SymbolTable st = null;
 
 int run(string let, string arg, string par){
