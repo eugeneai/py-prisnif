@@ -3,9 +3,11 @@ module atp;
 import pyd.pyd;
 import std.stdio;
 import std.conv;
+import deimos.python.Python;
 
 import prisnif;
 import symbol;
+import gterm;
 
 class Symbol:symbol.Symbol{
   PydObject pyo = null; // Object that is called (if not NULL or None)
@@ -29,7 +31,74 @@ class Symbol:symbol.Symbol{
     return pyo;
   };
 
+  override bool can_interp() {
+    return pyo ! is null;
+  };
 
+  static PydObject interp(GTerm t) {
+    PydObject pyd_args;
+    PyObject * py_args;
+    PyObject * tmp;
+    py_args = PyTuple_New(t.args.length);
+    foreach(i,a;t.args){
+      if (a.symbol.can_interp()) {
+        tmp = d_to_python( (cast(Symbol) a.symbol).pyo);
+      } else {
+        tmp = d_to_python(a.to_string());
+      };
+      if (tmp is null) {
+        writefln("Error: cannot convert!");
+        return null;
+      };
+      PyTuple_SetItem(py_args, i, tmp);
+    }
+    pyd_args=new PydObject(py_args);
+    return (cast(Symbol) t.symbol).pyo.unpack_call(pyd_args);
+  }
+
+  static GTerm reduce(GTerm ot) {
+    PydObject rc;
+    string rcs;
+    // writeln("reduce: [start]");
+    GTerm t = ot.get_value();
+    if(t.is_top_constant())return ot;
+    if(t.is_top_atom()){
+      foreach(i,a;t.args){
+        t.args[i] = Symbol.reduce(a);
+      }
+      if (! t.symbol.can_interp()) return t;
+      if (! (cast (Symbol) t.symbol).pyo.callable()) return t;
+      rc = interp(t);
+      if (rc is null) return t;
+      if (rc == None) return t;
+      rcs=rc.toString();
+      final switch (rcs) {
+      case "False":
+        return GTerm.cr_false();
+      case "True":
+        return null;
+      };
+
+      return t; // Just a predicate call, may be true or false must be returned
+                        // FIXME. I.e. None - Call and do nothig, True - return true, False - return false.
+
+    }
+    if(t.is_top_function()){
+      //writeln("reduce: function");
+      foreach(i,a;t.args){
+        t.args[i] = Symbol.reduce(a);
+      }
+      if (t.symbol.can_interp()) {
+        return t;
+      } else { // t.symbol.pyo != null
+        rc = interp(t);
+        if (rc is null) return t;
+        rcs=rc.toString();
+        return new GTerm(new Symbol(SymbolType.CONSTANT, "py_" ~ rcs, 0, rc));
+      }
+    }
+    return ot;
+  }
 }
 
 SymbolTable st = null;
